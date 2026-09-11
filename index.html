@@ -1,1872 +1,1468 @@
 <!DOCTYPE html>
 <html lang="ky">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Нургазы & Алина</title>
 
 <style>
 
-/* ===========================
-   ЖАЛПЫ
-=========================== */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html{
-scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-font-family:Georgia, "Times New Roman", serif;
-background:#fff;
-color:#333;
-overflow-x:hidden;
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #fff;
+    color: #333;
+    overflow-x: hidden;
 }
 
-img{
-max-width:100%;
-display:block;
+img {
+    display: block;
+    width: 100%;
 }
 
-/* ===========================
-   КОНВЕРТ ЭКРАНЫ
-=========================== */
+/* =====================================
+   КОНВЕРТ
+===================================== */
 
-#welcome{
+#welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
 
-position:fixed;
-inset:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-z-index:99999;
+    min-height: 100vh;
+    padding: 20px;
 
-display:flex;
-align-items:center;
-justify-content:center;
+    background:
+        linear-gradient(
+            rgba(255,255,255,.10),
+            rgba(255,255,255,.25)
+        ),
+        url("684aa452a0dfdadb39d374fa2ca13af9.jpg")
+        center / cover no-repeat;
 
-min-height:100vh;
-
-padding:20px;
-
-background:
-
-linear-gradient(
-rgba(255,255,255,.30),
-rgba(255,255,255,.35)
-),
-
-url("photo1.jpg")
-center/cover no-repeat;
-
-transition:
-opacity 1s ease,
-visibility 1s ease;
-
-overflow:hidden;
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
 }
 
-#welcome.hide{
-
-opacity:0;
-visibility:hidden;
-pointer-events:none;
-
+#welcome.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
-.envelope-box{
+.envelope-wrap {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
 
-width:100%;
-max-width:430px;
-
-text-align:center;
-
-animation:
-floatingEnvelope 3s ease-in-out infinite;
-
+    animation: envelopeFloat 3s ease-in-out infinite;
 }
 
-@keyframes floatingEnvelope{
+@keyframes envelopeFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
 
-0%,100%{
-transform:translateY(0);
+    50% {
+        transform: translateY(-12px);
+    }
 }
 
-50%{
-transform:translateY(-12px);
+.envelope {
+    position: relative;
+
+    width: 100%;
+    height: 270px;
+
+    background: #fffdf8;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.25);
+
+    cursor: pointer;
+    overflow: hidden;
 }
 
+/* Конверттин үстү */
+
+.flap {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 150px;
+
+    background: #f1eee6;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    transform-origin: top;
+
+    transition: transform .9s ease;
+
+    z-index: 4;
 }
 
-.envelope{
-
-position:relative;
-
-width:100%;
-height:270px;
-
-background:#fffdf8;
-
-border-radius:8px;
-
-box-shadow:
-0 20px 50px rgba(0,0,0,.25);
-
-overflow:hidden;
-
-cursor:pointer;
-
+.envelope.open .flap {
+    transform: rotateX(180deg);
 }
 
-/* үстү */
+/* Сол каптал */
 
-.flap{
+.envelope::before {
+    content: "";
 
-position:absolute;
+    position: absolute;
 
-left:0;
-top:0;
+    left: 0;
+    bottom: 0;
 
-width:100%;
-height:150px;
+    width: 0;
+    height: 0;
 
-background:#eeeae0;
+    border-left: 215px solid #f3f0e8;
+    border-top: 135px solid transparent;
+    border-bottom: 135px solid #f3f0e8;
 
-clip-path:
-polygon(
-0 0,
-100% 0,
-50% 100%
-);
-
-transform-origin:top;
-
-transition:
-transform .8s ease;
-
-z-index:4;
-
+    z-index: 2;
 }
 
-.envelope.open .flap{
+/* Оң каптал */
 
-transform:
-rotateX(180deg);
+.envelope::after {
+    content: "";
 
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+
+    width: 0;
+    height: 0;
+
+    border-right: 215px solid #e9e5db;
+    border-top: 135px solid transparent;
+    border-bottom: 135px solid #e9e5db;
+
+    z-index: 2;
 }
 
-/* сол жагы */
+.envelope-content {
+    position: absolute;
+    inset: 0;
 
-.envelope:before{
+    z-index: 10;
 
-content:"";
+    display: flex;
+    flex-direction: column;
 
-position:absolute;
+    align-items: center;
+    justify-content: center;
 
-left:0;
-bottom:0;
+    padding: 20px;
 
-width:0;
-height:0;
-
-border-left:
-215px solid #f2efe8;
-
-border-top:
-135px solid transparent;
-
-border-bottom:
-135px solid #f2efe8;
-
-z-index:2;
-
+    pointer-events: none;
 }
 
-/* оң жагы */
+.envelope-name {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-.envelope:after{
+    font-size: 45px;
 
-content:"";
+    color: #799bab;
 
-position:absolute;
-
-right:0;
-bottom:0;
-
-width:0;
-height:0;
-
-border-right:
-215px solid #eae6dd;
-
-border-top:
-135px solid transparent;
-
-border-bottom:
-135px solid #eae6dd;
-
-z-index:2;
-
+    margin-bottom: 22px;
 }
 
-.envelope-text{
+.seal {
+    width: 68px;
+    height: 68px;
 
-position:absolute;
+    border-radius: 50%;
 
-inset:0;
+    background:
+        linear-gradient(
+            135deg,
+            #e4c77f,
+            #b9903d
+        );
 
-z-index:10;
+    border: 4px double #fff0bd;
 
-display:flex;
-flex-direction:column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-align-items:center;
-justify-content:center;
+    color: white;
+    font-size: 30px;
 
-pointer-events:none;
+    margin-bottom: 18px;
 
-padding:20px;
-
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.2);
 }
 
-.envelope-name{
-
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
-
-font-size:45px;
-
-color:#779caf;
-
-margin-bottom:22px;
-
-text-shadow:
-0 2px 8px rgba(255,255,255,.7);
-
+.open-text {
+    color: #444;
+    font-size: 16px;
+    letter-spacing: 1px;
 }
 
-.seal{
-
-width:68px;
-height:68px;
-
-border-radius:50%;
-
-background:
-linear-gradient(
-135deg,
-#d8bd79,
-#b99144
-);
-
-display:flex;
-
-align-items:center;
-justify-content:center;
-
-font-size:29px;
-
-color:#fff;
-
-border:
-4px double #fff3c7;
-
-box-shadow:
-0 5px 16px rgba(0,0,0,.18);
-
-margin-bottom:18px;
-
-}
-
-.open-title{
-
-font-size:17px;
-
-letter-spacing:1px;
-
-color:#4b4b4b;
-
-}
-
-/* ===========================
+/* =====================================
    ЖАЛБЫРАК АНИМАЦИЯ
-=========================== */
+===================================== */
 
-#petals{
+#petals {
+    position: fixed;
+    inset: 0;
 
-position:fixed;
+    z-index: 50;
 
-inset:0;
+    pointer-events: none;
+    overflow: hidden;
+}
 
-z-index:50;
+.petal {
+    position: absolute;
 
-pointer-events:none;
+    top: -50px;
 
-overflow:hidden;
+    width: 15px;
+    height: 9px;
+
+    background: rgba(185, 202, 170, .75);
+
+    border-radius:
+        100% 0 100% 0;
+
+    animation:
+        petalFall linear infinite;
+}
+
+@keyframes petalFall {
+
+    0% {
+        transform:
+            translateY(-10vh)
+            translateX(0)
+            rotate(0deg);
+
+        opacity: 0;
+    }
+
+    10% {
+        opacity: .8;
+    }
+
+    50% {
+        transform:
+            translateY(50vh)
+            translateX(35px)
+            rotate(220deg);
+    }
+
+    100% {
+        transform:
+            translateY(110vh)
+            translateX(-30px)
+            rotate(450deg);
+
+        opacity: .1;
+    }
 
 }
 
-.petal{
-
-position:absolute;
-
-top:-60px;
-
-width:16px;
-height:10px;
-
-border-radius:
-100% 0 100% 0;
-
-background:
-rgba(185,201,165,.72);
-
-animation:
-fallPetal linear infinite;
-
-}
-
-@keyframes fallPetal{
-
-0%{
-
-transform:
-translateY(-10vh)
-translateX(0)
-rotate(0deg);
-
-opacity:0;
-
-}
-
-10%{
-opacity:.9;
-}
-
-50%{
-
-transform:
-translateY(50vh)
-translateX(35px)
-rotate(200deg);
-
-}
-
-100%{
-
-transform:
-translateY(110vh)
-translateX(-30px)
-rotate(430deg);
-
-opacity:.1;
-
-}
-
-}
-
-/* ===========================
+/* =====================================
    СКРОЛЛ АНИМАЦИЯ
-=========================== */
+===================================== */
 
-.reveal{
+.reveal {
+    opacity: 0;
 
-opacity:0;
+    transform: translateY(45px);
 
-transform:
-translateY(45px);
-
-transition:
-opacity 1s ease,
-transform 1s ease;
-
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
 }
 
-.reveal.active{
+.reveal.active {
+    opacity: 1;
 
-opacity:1;
-
-transform:
-translateY(0);
-
+    transform: translateY(0);
 }
 
-.reveal-left{
+.reveal-left {
+    opacity: 0;
 
-opacity:0;
+    transform: translateX(-60px);
 
-transform:
-translateX(-60px);
-
-transition:
-all 1s ease;
-
+    transition: 1s ease;
 }
 
-.reveal-left.active{
+.reveal-left.active {
+    opacity: 1;
 
-opacity:1;
-
-transform:
-translateX(0);
-
+    transform: translateX(0);
 }
 
-.reveal-right{
+.reveal-right {
+    opacity: 0;
 
-opacity:0;
+    transform: translateX(60px);
 
-transform:
-translateX(60px);
-
-transition:
-all 1s ease;
-
+    transition: 1s ease;
 }
 
-.reveal-right.active{
+.reveal-right.active {
+    opacity: 1;
 
-opacity:1;
-
-transform:
-translateX(0);
-
+    transform: translateX(0);
 }
 
-/* ===========================
+/* =====================================
    БАШКЫ БӨЛҮК
-=========================== */
+===================================== */
 
-.hero{
+.hero {
+    min-height: 100vh;
 
-min-height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-display:flex;
+    padding: 50px 20px;
 
-align-items:center;
-justify-content:center;
+    text-align: center;
 
-text-align:center;
-
-padding:45px 20px;
-
-background:
-
-linear-gradient(
-rgba(255,255,255,.18),
-rgba(255,255,255,.56)
-),
-
-url("photo1.jpg")
-center/cover no-repeat;
-
+    background:
+        linear-gradient(
+            rgba(255,255,255,.10),
+            rgba(255,255,255,.52)
+        ),
+        url("684aa452a0dfdadb39d374fa2ca13af9.jpg")
+        center / cover no-repeat;
 }
 
-.hero-card{
+.hero-card {
+    width: min(95%, 620px);
 
-width:min(95%,620px);
+    padding: 50px 20px;
 
-padding:
-48px 20px;
+    border-radius: 28px;
 
-background:
-rgba(255,255,255,.69);
+    background:
+        rgba(255,255,255,.70);
 
-border:
-1px solid rgba(255,255,255,.95);
+    border:
+        1px solid rgba(255,255,255,.95);
 
-border-radius:28px;
+    backdrop-filter: blur(5px);
 
-backdrop-filter:
-blur(5px);
-
-box-shadow:
-0 15px 45px
-rgba(0,0,0,.10);
-
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.10);
 }
 
-.small-heading{
+.hero-small {
+    font-size: 16px;
 
-font-size:16px;
+    letter-spacing: 4px;
 
-letter-spacing:4px;
+    color: #777;
 
-color:#777;
-
-margin-bottom:23px;
-
+    margin-bottom: 23px;
 }
 
-.names{
+.hero-name {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-size:
+        clamp(52px, 12vw, 88px);
 
-font-size:
-clamp(52px,12vw,88px);
+    font-weight: normal;
 
-font-weight:400;
+    line-height: 1.05;
 
-line-height:1.05;
+    color: #789baa;
 
-color:#7598ab;
-
-margin-bottom:24px;
-
+    margin-bottom: 25px;
 }
 
-.hero-date{
+.hero-date {
+    font-size: 21px;
 
-font-size:21px;
+    letter-spacing: 4px;
 
-letter-spacing:4px;
-
-color:#555;
-
+    color: #555;
 }
 
-/* ===========================
-   ЧАКЫРУУ
-=========================== */
+/* =====================================
+   ЧАКЫРУУ ТЕКСТ
+===================================== */
 
-.invite{
+.invitation {
+    padding: 90px 22px;
 
-position:relative;
+    text-align: center;
 
-padding:
-90px 22px;
-
-text-align:center;
-
-background:#fff;
-
+    background: #fff;
 }
 
-.container{
+.container {
+    width: min(92%, 720px);
 
-width:min(92%,720px);
-
-margin:auto;
-
+    margin: auto;
 }
 
-.script-title{
+.invitation-title {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-size:
+        clamp(43px, 10vw, 65px);
 
-font-size:
-clamp(45px,10vw,65px);
+    font-weight: normal;
 
-font-weight:400;
+    color: #789baa;
 
-color:#7598ab;
+    line-height: 1.2;
 
-line-height:1.2;
-
-margin-bottom:32px;
-
+    margin-bottom: 35px;
 }
 
-.invite p{
+.invitation p {
+    font-size: 20px;
 
-font-size:20px;
+    line-height: 1.8;
 
-line-height:1.8;
-
-margin-bottom:20px;
-
+    margin-bottom: 20px;
 }
 
-.couple{
+.couple-name {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-size:
+        clamp(45px, 10vw, 68px);
 
-font-size:
-clamp(45px,10vw,68px);
+    color: #789baa;
 
-color:#7598ab;
-
-margin:25px 0;
-
+    margin: 25px 0;
 }
 
-/* ===========================
-   СҮРӨТ БӨЛҮК
-=========================== */
+/* =====================================
+   СҮРӨТ
+===================================== */
 
-.photo-section{
-
-position:relative;
-
-overflow:hidden;
-
+.photo-section {
+    overflow: hidden;
 }
 
-.photo-section img{
+.photo-section img {
+    width: 100%;
 
-width:100%;
+    max-height: 850px;
 
-height:auto;
-
-min-height:380px;
-
-max-height:800px;
-
-object-fit:cover;
-
+    object-fit: cover;
 }
 
-/* ===========================
+/* =====================================
    КАЛЕНДАРЬ
-=========================== */
+===================================== */
 
-.calendar-section{
+.calendar-section {
+    padding: 85px 20px;
 
-padding:
-85px 20px;
+    text-align: center;
 
-text-align:center;
+    background:
+        linear-gradient(
+            #fbfcfc,
+            #f3f7f8
+        );
+}
 
-background:
-linear-gradient(
-180deg,
-#fbfcfc,
-#f6f9fa
-);
+.calendar-title {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
+
+    font-size:
+        clamp(42px, 9vw, 62px);
+
+    font-weight: normal;
+
+    color: #789baa;
+
+    margin-bottom: 35px;
+}
+
+.calendar {
+    width: min(100%, 470px);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    gap: 6px;
+
+    font-size: 17px;
+}
+
+.calendar div {
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.week {
+    font-size: 13px;
+
+    color: #777;
+}
+
+.selected-day {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    background: #819fac;
+
+    animation:
+        datePulse 2s infinite;
+}
+
+@keyframes datePulse {
+
+    0%,100% {
+        box-shadow:
+            0 0 0 0
+            rgba(125,160,178,.5);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 12px
+            rgba(125,160,178,0);
+    }
 
 }
 
-.calendar-title{
+.wedding-time {
+    margin-top: 35px;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-size:
-clamp(42px,9vw,62px);
+    font-size: 50px;
 
-font-weight:400;
-
-color:#7598ab;
-
-margin-bottom:35px;
-
+    color: #789baa;
 }
 
-.calendar{
-
-width:min(100%,470px);
-
-margin:auto;
-
-display:grid;
-
-grid-template-columns:
-repeat(7,1fr);
-
-gap:6px;
-
-font-size:17px;
-
-}
-
-.calendar div{
-
-height:42px;
-
-display:flex;
-
-align-items:center;
-justify-content:center;
-
-}
-
-.week{
-
-font-size:13px;
-
-color:#777;
-
-}
-
-.day-selected{
-
-width:43px;
-height:43px;
-
-border-radius:50%;
-
-background:#7f9faf;
-
-color:#fff;
-
-display:flex;
-
-justify-content:center;
-align-items:center;
-
-box-shadow:
-0 5px 15px
-rgba(80,100,120,.25);
-
-animation:
-pulseDate 2s infinite;
-
-}
-
-@keyframes pulseDate{
-
-0%,100%{
-
-box-shadow:
-0 0 0 0
-rgba(121,158,177,.5);
-
-}
-
-50%{
-
-box-shadow:
-0 0 0 12px
-rgba(121,158,177,0);
-
-}
-
-}
-
-.time{
-
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
-
-font-size:50px;
-
-color:#7598ab;
-
-margin-top:34px;
-
-}
-
-/* ===========================
+/* =====================================
    ТАЙМЕР
-=========================== */
+===================================== */
 
-.timer-section{
+.timer-section {
+    min-height: 650px;
 
-min-height:650px;
+    padding: 60px 16px;
 
-padding:60px 16px;
+    display: flex;
 
-display:flex;
+    align-items: center;
+    justify-content: center;
 
-align-items:center;
-justify-content:center;
+    text-align: center;
 
-text-align:center;
+    color: #fff;
 
-color:#fff;
-
-background:
-
-linear-gradient(
-rgba(40,40,45,.28),
-rgba(40,40,45,.43)
-),
-
-url("photo2.jpg")
-center/cover no-repeat;
-
+    background:
+        linear-gradient(
+            rgba(25,30,35,.25),
+            rgba(25,30,35,.42)
+        ),
+        url("8d6ce4de0af0c35870d68b8d74058e24.jpg")
+        center / cover no-repeat;
 }
 
-.timer-title{
+.timer-title {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-size:
+        clamp(52px, 12vw, 78px);
 
-font-size:
-clamp(52px,12vw,78px);
+    font-weight: normal;
 
-font-weight:400;
+    margin-bottom: 42px;
 
-margin-bottom:42px;
-
-text-shadow:
-0 3px 12px rgba(0,0,0,.2);
-
+    text-shadow:
+        0 3px 15px rgba(0,0,0,.25);
 }
 
-.countdown{
+.countdown {
+    width: min(100%, 700px);
 
-width:min(100%,700px);
+    display: grid;
 
-display:grid;
+    grid-template-columns:
+        repeat(4, 1fr);
 
-grid-template-columns:
-repeat(4,1fr);
-
-gap:8px;
-
+    gap: 8px;
 }
 
-.time-box{
+.time-box {
+    padding: 20px 4px;
 
-padding:
-20px 4px;
+    border-radius: 15px;
 
-background:
-rgba(255,255,255,.17);
+    border:
+        1px solid rgba(255,255,255,.38);
 
-border:
-1px solid rgba(255,255,255,.35);
+    background:
+        rgba(255,255,255,.17);
 
-border-radius:15px;
-
-backdrop-filter:
-blur(6px);
-
+    backdrop-filter: blur(6px);
 }
 
-.number{
+.time-number {
+    display: block;
 
-display:block;
-
-font-size:
-clamp(29px,8vw,52px);
-
+    font-size:
+        clamp(28px, 8vw, 52px);
 }
 
-.label{
+.time-label {
+    display: block;
 
-display:block;
+    margin-top: 7px;
 
-font-size:11px;
+    font-size: 11px;
 
-margin-top:6px;
-
-letter-spacing:1px;
-
+    letter-spacing: 1px;
 }
 
-/* ===========================
+/* =====================================
    ДАРЕК
-=========================== */
+===================================== */
 
-.location{
+.location {
+    padding: 90px 22px;
 
-padding:
-90px 22px;
+    text-align: center;
 
-text-align:center;
-
-background:#fff;
-
+    background: #fff;
 }
 
-.location h2{
+.location-title {
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-size:
+        clamp(50px, 10vw, 68px);
 
-font-size:
-clamp(50px,10vw,68px);
+    font-weight: normal;
 
-font-weight:400;
+    color: #789baa;
 
-color:#7598ab;
-
-margin-bottom:30px;
-
+    margin-bottom: 30px;
 }
 
-.location p{
+.location p {
+    font-size: 20px;
 
-font-size:20px;
-
-line-height:1.7;
-
+    line-height: 1.7;
 }
 
-.restaurant{
+.restaurant {
+    font-size: 32px;
 
-font-size:32px;
+    letter-spacing: 2px;
 
-letter-spacing:2px;
-
-margin:18px 0;
-
+    margin: 18px 0;
 }
 
-.map-button{
+.map-button {
+    display: inline-block;
 
-display:inline-block;
+    margin-top: 35px;
 
-margin-top:35px;
+    padding: 15px 38px;
 
-padding:
-15px 38px;
+    border-radius: 30px;
 
-border-radius:30px;
+    background: #829fac;
 
-background:#829faf;
+    color: #fff;
 
-color:#fff;
+    text-decoration: none;
 
-text-decoration:none;
+    font-size: 18px;
 
-font-size:18px;
-
-box-shadow:
-0 6px 18px
-rgba(0,0,0,.12);
-
-transition:.3s;
-
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.12);
 }
 
-.map-button:hover{
-
-transform:
-translateY(-3px);
-
-background:#6c8d9f;
-
-}
-
-/* ===========================
+/* =====================================
    RSVP
-=========================== */
+===================================== */
 
-.rsvp{
+.rsvp {
+    padding: 85px 22px;
 
-padding:
-85px 22px;
-
-background:
-linear-gradient(
-180deg,
-#f8fafb,
-#edf3f5
-);
-
+    background:
+        linear-gradient(
+            #f8fafb,
+            #edf3f5
+        );
 }
 
-.rsvp-box{
+.rsvp-box {
+    width: min(100%, 620px);
 
-width:min(100%,620px);
-
-margin:auto;
-
+    margin: auto;
 }
 
-.rsvp-title{
+.rsvp-title {
+    text-align: center;
 
-text-align:center;
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-size:
+        clamp(48px, 10vw, 68px);
 
-font-size:
-clamp(48px,10vw,68px);
+    font-weight: normal;
 
-font-weight:400;
+    color: #789baa;
 
-color:#7598ab;
-
-margin-bottom:35px;
-
+    margin-bottom: 35px;
 }
 
-.question{
+.question {
+    font-size: 20px;
 
-font-size:20px;
-
-margin:
-26px 0 16px;
-
+    margin: 26px 0 16px;
 }
 
-.option{
+.option {
+    display: block;
 
-display:block;
+    margin: 14px 0;
 
-font-size:18px;
-
-margin:14px 0;
-
+    font-size: 18px;
 }
 
-.option input{
+.option input {
+    margin-right: 10px;
 
-margin-right:9px;
-
-transform:
-scale(1.25);
-
+    transform: scale(1.25);
 }
 
-.counter-box{
+.guest-counter {
+    display: flex;
 
-display:flex;
+    align-items: center;
 
-align-items:center;
+    gap: 20px;
 
-gap:18px;
-
-margin:
-20px 0 30px;
-
+    margin: 20px 0 30px;
 }
 
-.counter-button{
+.guest-counter button {
+    width: 58px;
+    height: 45px;
 
-width:58px;
-height:45px;
+    border: 1px solid #999;
 
-border:
-1px solid #9c9c9c;
+    border-radius: 25px;
 
-border-radius:25px;
+    background: #fff;
 
-background:#fff;
-
-font-size:24px;
-
+    font-size: 25px;
 }
 
-#guestCount{
-
-font-size:25px;
-
+#guestCount {
+    font-size: 25px;
 }
 
-.name-input{
+.name-input {
+    width: 100%;
 
-width:100%;
+    padding: 16px;
 
-padding:16px;
+    border:
+        1px solid #aaa;
 
-border:
-1px solid #aaa;
+    border-radius: 10px;
 
-border-radius:10px;
+    background: #fff;
 
-font-size:18px;
+    text-align: center;
 
-text-align:center;
+    font-family: inherit;
 
-font-family:inherit;
+    font-size: 18px;
 
-outline:none;
-
-background:#fff;
-
+    outline: none;
 }
 
-.send-button{
+.send-button {
+    width: 100%;
 
-width:100%;
+    margin-top: 20px;
 
-margin-top:20px;
+    padding: 16px;
 
-padding:16px;
+    border: 0;
 
-border:0;
+    border-radius: 10px;
 
-border-radius:10px;
+    background: #829fac;
 
-background:#829faf;
+    color: #fff;
 
-color:#fff;
+    font-family: inherit;
 
-font-size:20px;
-
-font-family:inherit;
-
+    font-size: 20px;
 }
 
-/* ===========================
+/* =====================================
    АКЫРКЫ БӨЛҮК
-=========================== */
+===================================== */
 
-.footer{
+.footer {
+    padding: 85px 20px 0;
 
-padding:
-85px 20px 0;
+    text-align: center;
 
-text-align:center;
-
-background:#fff;
-
+    background: #fff;
 }
 
-.footer p{
+.footer p {
+    font-size: 20px;
 
-font-size:20px;
-
-line-height:1.7;
-
+    line-height: 1.7;
 }
 
-.hosts{
+.hosts {
+    margin: 25px 0 30px;
 
-font-family:
-"Brush Script MT",
-"Segoe Script",
-cursive;
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
 
-font-size:
-clamp(48px,10vw,70px)
-!important;
+    font-size:
+        clamp(48px, 10vw, 70px) !important;
 
-color:#7598ab;
-
-margin:
-25px 0 30px;
-
+    color: #789baa;
 }
 
-.footer img{
+.footer-image {
+    width: 100%;
 
-width:100%;
+    max-height: 850px;
 
-max-height:800px;
+    margin-top: 55px;
 
-object-fit:cover;
-
-margin-top:55px;
-
+    object-fit: cover;
 }
 
-/* ===========================
+/* =====================================
    МУЗЫКА КНОПКА
-=========================== */
+===================================== */
 
-.music-button{
+.music-button {
+    position: fixed;
 
-position:fixed;
+    right: 18px;
+    bottom: 20px;
 
-right:17px;
-bottom:18px;
+    z-index: 1000;
 
-z-index:999;
+    width: 55px;
+    height: 55px;
 
-width:55px;
-height:55px;
+    border: 0;
 
-border:0;
+    border-radius: 50%;
 
-border-radius:50%;
+    background:
+        rgba(120,154,171,.95);
 
-background:
-rgba(116,151,170,.94);
+    color: #fff;
 
-color:#fff;
+    font-size: 24px;
 
-font-size:23px;
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.20);
 
-display:none;
-
-box-shadow:
-0 4px 17px
-rgba(0,0,0,.22);
-
+    display: none;
 }
 
-/* ===========================
-   МОБИЛЬНЫЙ
-=========================== */
+/* =====================================
+   ТЕЛЕФОН
+===================================== */
 
-@media(max-width:520px){
+@media (max-width: 520px) {
 
-.envelope{
+    .envelope {
+        height: 235px;
+    }
 
-height:235px;
+    .envelope::before {
+        border-left-width: 190px;
+        border-top-width: 118px;
+        border-bottom-width: 118px;
+    }
 
-}
+    .envelope::after {
+        border-right-width: 190px;
+        border-top-width: 118px;
+        border-bottom-width: 118px;
+    }
 
-.envelope:before{
+    .flap {
+        height: 130px;
+    }
 
-border-left-width:190px;
-border-top-width:118px;
-border-bottom-width:118px;
+    .envelope-name {
+        font-size: 37px;
+    }
 
-}
+    .open-text {
+        font-size: 14px;
+    }
 
-.envelope:after{
+    .hero-card {
+        padding: 38px 14px;
+    }
 
-border-right-width:190px;
-border-top-width:118px;
-border-bottom-width:118px;
+    .invitation p {
+        font-size: 18px;
+    }
 
-}
+    .calendar {
+        gap: 2px;
 
-.flap{
+        font-size: 16px;
+    }
 
-height:130px;
+    .countdown {
+        gap: 4px;
+    }
 
-}
+    .time-box {
+        padding: 15px 2px;
+    }
 
-.envelope-name{
+    .time-label {
+        font-size: 9px;
+    }
 
-font-size:37px;
-
-}
-
-.open-title{
-
-font-size:14px;
-
-}
-
-.hero-card{
-
-padding:
-37px 14px;
-
-}
-
-.invite p{
-
-font-size:18px;
-
-}
-
-.calendar{
-
-font-size:16px;
-
-gap:2px;
-
-}
-
-.countdown{
-
-gap:4px;
-
-}
-
-.time-box{
-
-padding:
-15px 2px;
-
-}
-
-.label{
-
-font-size:9px;
-
-}
-
-.restaurant{
-
-font-size:27px;
-
-}
+    .restaurant {
+        font-size: 27px;
+    }
 
 }
 
 </style>
-
 </head>
 
 <body>
 
+<!-- МУЗЫКА -->
 
-<!-- ===========================
-     МУЗЫКА
-=========================== -->
-
-<audio
-id="weddingMusic"
-loop
-preload="auto">
-
-<source
-src="music.m4a"
-type="audio/mp4">
-
+<audio id="weddingMusic" loop preload="auto">
+    <source
+        src="wmnwoyeejhxlgmprft8i.m4a"
+        type="audio/mp4">
 </audio>
 
 
-<!-- ===========================
-     ЖАЛБЫРАКТАР
-=========================== -->
+<!-- ЖАЛБЫРАКТАР -->
 
 <div id="petals"></div>
 
 
-<!-- ===========================
-     КОНВЕРТ
-=========================== -->
+<!-- КОНВЕРТ -->
 
 <div id="welcome">
 
-<div class="envelope-box">
+    <div class="envelope-wrap">
 
-<div
-class="envelope"
-id="envelope">
+        <div
+            class="envelope"
+            id="envelope">
 
-<div class="flap"></div>
+            <div class="flap"></div>
 
-<div class="envelope-text">
+            <div class="envelope-content">
 
-<div class="envelope-name">
+                <div class="envelope-name">
+                    Нургазы & Алина
+                </div>
 
-Нургазы & Алина
+                <div class="seal">
+                    ♡
+                </div>
 
-</div>
+                <div class="open-text">
+                    Чакырууну ачуу үчүн басыңыз
+                </div>
 
-<div class="seal">
+            </div>
 
-♡
+        </div>
 
-</div>
-
-<div class="open-title">
-
-Чакырууну ачуу үчүн басыңыз
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
 
-<!-- ===========================
-     БАШКЫ ЭКРАН
-=========================== -->
+<!-- БАШКЫ БӨЛҮК -->
 
 <section class="hero">
 
-<div
-class="hero-card reveal">
+    <div class="hero-card reveal">
 
-<div class="small-heading">
+        <div class="hero-small">
+            ҮЙЛӨНҮҮ ҮЛПӨТ ТОЮ
+        </div>
 
-ҮЙЛӨНҮҮ ҮЛПӨТ ТОЮ
+        <h1 class="hero-name">
+            Нургазы & Алина
+        </h1>
 
-</div>
+        <div class="hero-date">
+            04 • 10 • 2026
+        </div>
 
-<h1 class="names">
-
-Нургазы & Алина
-
-</h1>
-
-<div class="hero-date">
-
-04 • 10 • 2026
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ===========================
-     ЧАКЫРУУ
-=========================== -->
+<!-- ЧАКЫРУУ -->
 
-<section class="invite">
+<section class="invitation">
 
-<div
-class="container reveal">
+    <div class="container reveal">
 
-<h2 class="script-title">
+        <h2 class="invitation-title">
+            Урматтуу биздин сыйлуу коногубуз
+        </h2>
 
-Урматтуу биздин сыйлуу коногубуз
+        <p>
+            Сиздерди балдарыбыз
+        </p>
 
-</h2>
+        <div class="couple-name">
+            Нургазы менен Алинанын
+        </div>
 
-<p>
+        <p>
+            үйлөнүү үлпөт тоюна арналган
+            салтанаттуу кечебизге келип,
+            ак дасторконубуздан даам сызып,
+            батаңызды берип,
+            кадырлуу коногубуз болуп
+            кетүүгө чакырабыз.
+        </p>
 
-Сиздерди балдарыбыз
-
-</p>
-
-<div class="couple">
-
-Нургазы менен Алинанын
-
-</div>
-
-<p>
-
-үйлөнүү үлпөт тоюна арналган
-салтанаттуу кечебизге келип,
-ак дасторконубуздан даам сызып,
-батаңызды берип,
-кадырлуу коногубуз болуп
-кетүүгө чакырабыз.
-
-</p>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ===========================
-     СҮРӨТ
-=========================== -->
+<!-- ҮЧҮНЧҮ СҮРӨТ -->
 
 <section class="photo-section reveal-left">
 
-<img
-src="photo3.jpg"
-alt="Wedding">
+    <img
+        src="cf2903b4ff46f1bf01cda547e68fa871.jpg"
+        alt="Wedding">
 
 </section>
 
 
-<!-- ===========================
-     КАЛЕНДАРЬ
-=========================== -->
+<!-- КАЛЕНДАРЬ -->
 
 <section class="calendar-section">
 
-<div
-class="container reveal">
+    <div class="container reveal">
 
-<h2 class="calendar-title">
+        <h2 class="calendar-title">
+            2026-жылдын 4-октябры
+        </h2>
 
-2026-жылдын 4-октябры
+        <div class="calendar">
 
-</h2>
+            <div class="week">Дш</div>
+            <div class="week">Шш</div>
+            <div class="week">Шр</div>
+            <div class="week">Бш</div>
+            <div class="week">Жм</div>
+            <div class="week">Иш</div>
+            <div class="week">Жк</div>
 
-<div class="calendar">
+            <div></div>
+            <div></div>
+            <div></div>
 
-<div class="week">Дш</div>
-<div class="week">Шш</div>
-<div class="week">Шр</div>
-<div class="week">Бш</div>
-<div class="week">Жм</div>
-<div class="week">Иш</div>
-<div class="week">Жк</div>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
 
-<div></div>
-<div></div>
-<div></div>
+            <div>
+                <span class="selected-day">
+                    4
+                </span>
+            </div>
 
-<div>1</div>
-<div>2</div>
-<div>3</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
 
-<div>
+            <div>12</div>
+            <div>13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
 
-<span class="day-selected">
+            <div>19</div>
+            <div>20</div>
+            <div>21</div>
+            <div>22</div>
+            <div>23</div>
+            <div>24</div>
+            <div>25</div>
 
-4
+            <div>26</div>
+            <div>27</div>
+            <div>28</div>
+            <div>29</div>
+            <div>30</div>
+            <div>31</div>
 
-</span>
+        </div>
 
-</div>
+        <div class="wedding-time">
+            Саат 16:00
+        </div>
 
-<div>5</div>
-<div>6</div>
-<div>7</div>
-<div>8</div>
-<div>9</div>
-<div>10</div>
-<div>11</div>
-
-<div>12</div>
-<div>13</div>
-<div>14</div>
-<div>15</div>
-<div>16</div>
-<div>17</div>
-<div>18</div>
-
-<div>19</div>
-<div>20</div>
-<div>21</div>
-<div>22</div>
-<div>23</div>
-<div>24</div>
-<div>25</div>
-
-<div>26</div>
-<div>27</div>
-<div>28</div>
-<div>29</div>
-<div>30</div>
-<div>31</div>
-
-</div>
-
-<div class="time">
-
-Саат 16:00
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ===========================
-     ТАЙМЕР
-=========================== -->
+<!-- ТАЙМЕР -->
 
 <section class="timer-section">
 
-<div class="reveal">
+    <div class="reveal">
 
-<h2 class="timer-title">
+        <h2 class="timer-title">
+            Тойго чейин
+        </h2>
 
-Тойго чейин
+        <div class="countdown">
 
-</h2>
+            <div class="time-box">
 
-<div class="countdown">
+                <span
+                    class="time-number"
+                    id="days">
+                    00
+                </span>
 
-<div class="time-box">
+                <span class="time-label">
+                    КҮН
+                </span>
 
-<span
-class="number"
-id="days">
+            </div>
 
-00
+            <div class="time-box">
 
-</span>
+                <span
+                    class="time-number"
+                    id="hours">
+                    00
+                </span>
 
-<span class="label">
+                <span class="time-label">
+                    СААТ
+                </span>
 
-КҮН
+            </div>
 
-</span>
+            <div class="time-box">
 
-</div>
+                <span
+                    class="time-number"
+                    id="minutes">
+                    00
+                </span>
 
+                <span class="time-label">
+                    МҮНӨТ
+                </span>
 
-<div class="time-box">
+            </div>
 
-<span
-class="number"
-id="hours">
+            <div class="time-box">
 
-00
+                <span
+                    class="time-number"
+                    id="seconds">
+                    00
+                </span>
 
-</span>
+                <span class="time-label">
+                    СЕКУНД
+                </span>
 
-<span class="label">
+            </div>
 
-СААТ
+        </div>
 
-</span>
-
-</div>
-
-
-<div class="time-box">
-
-<span
-class="number"
-id="minutes">
-
-00
-
-</span>
-
-<span class="label">
-
-МҮНӨТ
-
-</span>
-
-</div>
-
-
-<div class="time-box">
-
-<span
-class="number"
-id="seconds">
-
-00
-
-</span>
-
-<span class="label">
-
-СЕКУНД
-
-</span>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ===========================
-     ДАРЕК
-=========================== -->
+<!-- ДАРЕК -->
 
 <section class="location">
 
-<div
-class="container reveal">
+    <div class="container reveal">
 
-<h2>
+        <h2 class="location-title">
+            Дарегибиз
+        </h2>
 
-Дарегибиз
+        <p>
+            Кызыл-Кыя шаары
+        </p>
 
-</h2>
+        <div class="restaurant">
+            Ресторан «Салкын»
+        </div>
 
-<p>
+        <p>
+            Тойдун башталышы: 16:00
+        </p>
 
-Кызыл-Кыя шаары
+        <a
+            href="https://www.google.com/maps/search/?api=1&query=Салкын+ресторан+Кызыл-Кыя"
+            target="_blank"
+            class="map-button">
+            Картадан көрүү
+        </a>
 
-</p>
-
-<div class="restaurant">
-
-Ресторан «Салкын»
-
-</div>
-
-<p>
-
-Тойдун башталышы: 16:00
-
-</p>
-
-<a
-class="map-button"
-target="_blank"
-href="https://www.google.com/maps/search/?api=1&query=Салкын+ресторан+Кызыл-Кыя">
-
-Картадан көрүү
-
-</a>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ===========================
-     ЭКИНЧИ СҮРӨТ
-=========================== -->
+<!-- ЭКИНЧИ СҮРӨТ -->
 
 <section class="photo-section reveal-right">
 
-<img
-src="photo2.jpg"
-alt="Wedding">
+    <img
+        src="8d6ce4de0af0c35870d68b8d74058e24.jpg"
+        alt="Wedding">
 
 </section>
 
 
-<!-- ===========================
-     RSVP
-=========================== -->
+<!-- RSVP -->
 
 <section class="rsvp">
 
-<div
-class="rsvp-box reveal">
+    <div class="rsvp-box reveal">
 
-<h2 class="rsvp-title">
+        <h2 class="rsvp-title">
+            Тойго келесизби
+        </h2>
 
-Тойго келесизби
+        <div class="question">
+            Келесизби?
+        </div>
 
-</h2>
+        <label class="option">
+            <input
+                type="radio"
+                name="attendance"
+                value="Ооба барам">
+            Ооба, барам
+        </label>
 
-<div class="question">
+        <label class="option">
+            <input
+                type="radio"
+                name="attendance"
+                value="Жубайым менен барам">
+            Жубайым менен барам
+        </label>
 
-Келесизби?
+        <label class="option">
+            <input
+                type="radio"
+                name="attendance"
+                value="Бара албайм">
+            Бара албайм
+        </label>
 
-</div>
+        <div class="question">
+            Канча адам менен келесиз?
+        </div>
 
-<label class="option">
+        <div class="guest-counter">
 
-<input
-type="radio"
-name="attendance"
-value="Ооба барам">
+            <button
+                type="button"
+                onclick="changeGuests(-1)">
+                −
+            </button>
 
-Ооба, барам
+            <span id="guestCount">
+                1
+            </span>
 
-</label>
+            <button
+                type="button"
+                onclick="changeGuests(1)">
+                +
+            </button>
 
+        </div>
 
-<label class="option">
+        <input
+            id="guestName"
+            class="name-input"
+            type="text"
+            placeholder="Атыңызды жазыңыз">
 
-<input
-type="radio"
-name="attendance"
-value="Жубайым менен барам">
+        <button
+            class="send-button"
+            onclick="sendRSVP()">
+            Жөнөтүү
+        </button>
 
-Жубайым менен барам
-
-</label>
-
-
-<label class="option">
-
-<input
-type="radio"
-name="attendance"
-value="Бара албайм">
-
-Бара албайм
-
-</label>
-
-
-<div class="question">
-
-Канча адам менен келесиз?
-
-</div>
-
-
-<div class="counter-box">
-
-<button
-class="counter-button"
-onclick="changeGuests(-1)">
-
-−
-
-</button>
-
-<span id="guestCount">
-
-1
-
-</span>
-
-<button
-class="counter-button"
-onclick="changeGuests(1)">
-
-+
-
-</button>
-
-</div>
-
-
-<input
-class="name-input"
-id="guestName"
-placeholder="Атыңызды жазыңыз">
-
-
-<button
-class="send-button"
-onclick="sendRSVP()">
-
-Жөнөтүү
-
-</button>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ===========================
-     АКЫРКЫ БӨЛҮК
-=========================== -->
+<!-- АКЫРКЫ БӨЛҮК -->
 
 <section class="footer">
 
-<div
-class="container reveal">
+    <div class="container reveal">
 
-<p>
+        <p>
+            Сиздерди урматтоо менен той ээлери:
+        </p>
 
-Сиздерди урматтоо менен той ээлери:
+        <p class="hosts">
+            Замирбек & Мария
+        </p>
 
-</p>
+        <p>
+            Тойго келип,
+            биздин кубанычыбызга ортоктош болуп,
+            кадырлуу коногубуз болуп кетиңиздер!
+        </p>
 
-<p class="hosts">
+    </div>
 
-Замирбек & Мария
-
-</p>
-
-<p>
-
-Тойго келип,
-биздин кубанычыбызга ортоктош болуп,
-кадырлуу коногубуз болуп кетиңиздер!
-
-</p>
-
-</div>
-
-<img
-src="photo3.jpg"
-alt="Wedding">
+    <img
+        class="footer-image"
+        src="684aa452a0dfdadb39d374fa2ca13af9.jpg"
+        alt="Wedding">
 
 </section>
 
 
-<!-- ===========================
-     МУЗЫКА КНОПКА
-=========================== -->
+<!-- МУЗЫКА КНОПКА -->
 
 <button
-class="music-button"
-id="musicButton"
-onclick="toggleMusic()">
-
-♫
-
+    id="musicButton"
+    class="music-button"
+    onclick="toggleMusic()">
+    ♫
 </button>
 
 
 <script>
 
-/* ===========================
+/* =====================================
    КОНВЕРТ
-=========================== */
+===================================== */
 
 const envelope =
 document.getElementById("envelope");
@@ -1881,383 +1477,306 @@ const musicButton =
 document.getElementById("musicButton");
 
 
-document.body.style.overflow =
-"hidden";
+document.body.style.overflow = "hidden";
 
 
 envelope.addEventListener(
 "click",
-function(){
+function() {
 
-envelope.classList.add(
-"open"
-);
+    envelope.classList.add("open");
 
-music.play().catch(
-function(error){
+    music.play().catch(function(error) {
+        console.log("Музыка:", error);
+    });
 
-console.log(error);
+    setTimeout(function() {
 
-}
-);
+        welcome.classList.add("hide");
 
-setTimeout(
-function(){
+        document.body.style.overflow = "auto";
 
-welcome.classList.add(
-"hide"
-);
+        musicButton.style.display = "block";
 
-document.body.style.overflow =
-"auto";
+    }, 900);
 
-musicButton.style.display =
-"block";
-
-},
-850
-);
-
-}
-);
+});
 
 
-/* ===========================
-   МУЗЫКА
-=========================== */
+/* =====================================
+   МУЗЫКА ӨЧҮРҮҮ / КҮЙГҮЗҮҮ
+===================================== */
 
-function toggleMusic(){
+function toggleMusic() {
 
-if(music.paused){
+    if (music.paused) {
 
-music.play();
+        music.play();
 
-musicButton.innerHTML =
-"♫";
+        musicButton.innerHTML = "♫";
 
-}
-else{
+    } else {
 
-music.pause();
+        music.pause();
 
-musicButton.innerHTML =
-"▶";
+        musicButton.innerHTML = "▶";
 
-}
+    }
 
 }
 
 
-/* ===========================
-   ТАЙМЕР
-=========================== */
+/* =====================================
+   ТОЙГО ЧЕЙИН ТАЙМЕР
+===================================== */
 
 const weddingDate =
-new Date(
-"2026-10-04T16:00:00+06:00"
-);
+new Date("2026-10-04T16:00:00+06:00");
 
 
-function updateTimer(){
+function updateCountdown() {
 
-const now =
-new Date();
+    const now =
+    new Date();
 
-const diff =
-weddingDate - now;
-
-
-if(diff <= 0){
-
-document.getElementById(
-"days"
-).innerText = "0";
-
-document.getElementById(
-"hours"
-).innerText = "00";
-
-document.getElementById(
-"minutes"
-).innerText = "00";
-
-document.getElementById(
-"seconds"
-).innerText = "00";
-
-return;
-
-}
+    const difference =
+    weddingDate.getTime() -
+    now.getTime();
 
 
-const days =
-Math.floor(
-diff /
-(1000*60*60*24)
-);
+    if (difference <= 0) {
+
+        document.getElementById("days").innerText =
+        "0";
+
+        document.getElementById("hours").innerText =
+        "00";
+
+        document.getElementById("minutes").innerText =
+        "00";
+
+        document.getElementById("seconds").innerText =
+        "00";
+
+        return;
+    }
 
 
-const hours =
-Math.floor(
-diff /
-(1000*60*60)
-) % 24;
+    const days =
+    Math.floor(
+        difference /
+        (1000 * 60 * 60 * 24)
+    );
 
 
-const minutes =
-Math.floor(
-diff /
-(1000*60)
-) % 60;
+    const hours =
+    Math.floor(
+        difference /
+        (1000 * 60 * 60)
+    ) % 24;
 
 
-const seconds =
-Math.floor(
-diff /
-1000
-) % 60;
+    const minutes =
+    Math.floor(
+        difference /
+        (1000 * 60)
+    ) % 60;
 
 
-document.getElementById(
-"days"
-).innerText =
-days;
+    const seconds =
+    Math.floor(
+        difference /
+        1000
+    ) % 60;
 
 
-document.getElementById(
-"hours"
-).innerText =
-String(hours).padStart(
-2,"0"
-);
+    document.getElementById("days").innerText =
+    days;
 
 
-document.getElementById(
-"minutes"
-).innerText =
-String(minutes).padStart(
-2,"0"
-);
+    document.getElementById("hours").innerText =
+    String(hours).padStart(2, "0");
 
 
-document.getElementById(
-"seconds"
-).innerText =
-String(seconds).padStart(
-2,"0"
-);
+    document.getElementById("minutes").innerText =
+    String(minutes).padStart(2, "0");
+
+
+    document.getElementById("seconds").innerText =
+    String(seconds).padStart(2, "0");
 
 }
 
 
-updateTimer();
+updateCountdown();
 
 setInterval(
-updateTimer,
-1000
+    updateCountdown,
+    1000
 );
 
 
-/* ===========================
+/* =====================================
    АДАМ САНЫ
-=========================== */
+===================================== */
 
 let guests = 1;
 
 
-function changeGuests(value){
+function changeGuests(value) {
 
-guests += value;
+    guests += value;
 
+    if (guests < 1) {
+        guests = 1;
+    }
 
-if(guests < 1){
+    if (guests > 20) {
+        guests = 20;
+    }
 
-guests = 1;
-
-}
-
-
-if(guests > 20){
-
-guests = 20;
-
-}
-
-
-document.getElementById(
-"guestCount"
-).innerText =
-guests;
+    document.getElementById(
+        "guestCount"
+    ).innerText = guests;
 
 }
 
 
-/* ===========================
+/* =====================================
    RSVP
-=========================== */
+===================================== */
 
-function sendRSVP(){
+function sendRSVP() {
 
-const name =
-document.getElementById(
-"guestName"
-).value.trim();
-
-
-const answer =
-document.querySelector(
-'input[name="attendance"]:checked'
-);
+    const name =
+    document
+    .getElementById("guestName")
+    .value
+    .trim();
 
 
-if(!name){
-
-alert(
-"Сураныч, атыңызды жазыңыз"
-);
-
-return;
-
-}
+    const answer =
+    document.querySelector(
+        'input[name="attendance"]:checked'
+    );
 
 
-if(!answer){
+    if (!name) {
 
-alert(
-"Сураныч, тойго келериңизди белгилеңиз"
-);
+        alert(
+            "Сураныч, атыңызды жазыңыз"
+        );
 
-return;
+        return;
+    }
 
-}
+
+    if (!answer) {
+
+        alert(
+            "Сураныч, тойго келериңизди белгилеңиз"
+        );
+
+        return;
+    }
 
 
-alert(
-
-"Рахмат, " +
-name +
-"!\n\n" +
-
-"Жообуңуз кабыл алынды.\n" +
-
-answer.value +
-
-"\nАдам саны: " +
-
-guests
-
-);
+    alert(
+        "Рахмат, " +
+        name +
+        "!\n\n" +
+        "Жообуңуз кабыл алынды.\n" +
+        answer.value +
+        "\nАдам саны: " +
+        guests
+    );
 
 }
 
 
-/* ===========================
+/* =====================================
    СКРОЛЛ АНИМАЦИЯ
-=========================== */
+===================================== */
 
 const revealElements =
 document.querySelectorAll(
-".reveal, .reveal-left, .reveal-right"
+    ".reveal, .reveal-left, .reveal-right"
 );
 
 
 const observer =
 new IntersectionObserver(
 
-function(entries){
+function(entries) {
 
-entries.forEach(
-function(entry){
+    entries.forEach(
+    function(entry) {
 
-if(entry.isIntersecting){
+        if (entry.isIntersecting) {
 
-entry.target.classList.add(
-"active"
-);
+            entry.target.classList.add(
+                "active"
+            );
 
-}
+        }
 
-}
-);
+    });
 
 },
 
 {
-threshold:.15
+    threshold: 0.14
 }
 
 );
 
 
 revealElements.forEach(
-function(element){
+function(element) {
 
-observer.observe(
-element
-);
+    observer.observe(element);
 
-}
-);
+});
 
 
-/* ===========================
+/* =====================================
    ЖАЛБЫРАКТАР
-=========================== */
+===================================== */
 
-const petalsContainer =
-document.getElementById(
-"petals"
-);
+const petals =
+document.getElementById("petals");
 
 
-function createPetals(){
+for (let i = 0; i < 24; i++) {
 
-for(
-let i = 0;
-i < 22;
-i++
-){
+    const petal =
+    document.createElement("span");
 
-const petal =
-document.createElement(
-"span"
-);
+    petal.className = "petal";
 
-petal.classList.add(
-"petal"
-);
+    petal.style.left =
+    Math.random() * 100 + "%";
 
-petal.style.left =
-Math.random()*100 + "%";
+    petal.style.animationDuration =
+    (7 + Math.random() * 8) + "s";
 
-petal.style.animationDuration =
-(7 + Math.random()*8)
-+ "s";
+    petal.style.animationDelay =
+    (Math.random() * 8) + "s";
 
-petal.style.animationDelay =
-(Math.random()*8)
-+ "s";
+    petal.style.opacity =
+    0.3 + Math.random() * 0.6;
 
-petal.style.opacity =
-0.3 + Math.random()*0.6;
+    petal.style.width =
+    (10 + Math.random() * 10) + "px";
 
-petal.style.transform =
-"scale(" +
-(0.6 + Math.random())
-+ ")";
+    petal.style.height =
+    (7 + Math.random() * 6) + "px";
 
-petalsContainer.appendChild(
-petal
-);
+    petals.appendChild(petal);
 
 }
-
-}
-
-
-createPetals();
 
 </script>
 
 </body>
-    </html>
+   </html>
