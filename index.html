@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Нургазы & Алина</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Georgia, "Times New Roman", serif;
+    background:#fff;
+    color:#333;
+    overflow-x:hidden;
+}
+
+/* =========================================
+   КОНВЕРТ АЧЫЛГАН БИРИНЧИ ЭКРАН
+========================================= */
+
+#welcome{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+
+    background:
+    linear-gradient(
+        rgba(220,230,238,.30),
+        rgba(255,255,255,.45)
+    ),
+    url("photo1.jpg") center/cover no-repeat;
+
+    transition:
+    opacity 1s ease,
+    visibility 1s ease;
+}
+
+#welcome.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.welcome-box{
+    width:100%;
+    max-width:430px;
+    text-align:center;
+}
+
+.envelope{
+    position:relative;
+    width:100%;
+    height:270px;
+    background:#fffdf7;
+    border:1px solid #ddd8ce;
+    box-shadow:0 18px 45px rgba(0,0,0,.25);
+    cursor:pointer;
+    overflow:hidden;
+    border-radius:5px;
+    transition:transform .3s ease;
+}
+
+.envelope:active{
+    transform:scale(.97);
+}
+
+/* конверттин астыңкы бөлүгү */
+
+.envelope:before{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:0;
+    height:0;
+    border-left:215px solid #f1eee7;
+    border-top:135px solid transparent;
+    border-bottom:135px solid #f1eee7;
+    z-index:2;
+}
+
+.envelope:after{
+    content:"";
+    position:absolute;
+    right:0;
+    bottom:0;
+    width:0;
+    height:0;
+    border-right:215px solid #ebe7dd;
+    border-top:135px solid transparent;
+    border-bottom:135px solid #ebe7dd;
+    z-index:2;
+}
+
+/* үстү */
+
+.flap{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:150px;
+    background:#f8f5ed;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top;
+    transition:transform .8s ease;
+    z-index:4;
+}
+
+.envelope.open .flap{
+    transform:rotateX(180deg);
+}
+
+.envelope-content{
+    position:absolute;
+    inset:0;
+    z-index:5;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    pointer-events:none;
+}
+
+.envelope-names{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:45px;
+    color:#7999aa;
+    margin-bottom:24px;
+}
+
+.seal{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#d9bd77;
+    border:4px double #fff1c3;
+    color:#fff;
+    font-size:30px;
+    margin-bottom:18px;
+    box-shadow:0 5px 15px rgba(0,0,0,.18);
+}
+
+.open-text{
+    font-size:17px;
+    color:#4d4d4d;
+    letter-spacing:1px;
+}
+
+/* =========================================
+   ЖАЛПЫ
+========================================= */
+
+section{
+    position:relative;
+    width:100%;
+}
+
+.container{
+    width:min(90%,720px);
+    margin:auto;
+}
+
+.fade{
+    opacity:0;
+    transform:translateY(35px);
+    transition:
+    opacity .9s ease,
+    transform .9s ease;
+}
+
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================================
+   БАШКЫ БӨЛҮК
+========================================= */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:60px 20px;
+
+    background:
+    linear-gradient(
+        rgba(255,255,255,.10),
+        rgba(255,255,255,.52)
+    ),
+    url("photo1.jpg") center/cover no-repeat;
+}
+
+.hero-card{
+    width:min(95%,620px);
+    padding:48px 20px;
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(255,255,255,.95);
+    border-radius:25px;
+    box-shadow:0 14px 40px rgba(0,0,0,.10);
+    backdrop-filter:blur(3px);
+}
+
+.wedding-title{
+    font-size:17px;
+    letter-spacing:4px;
+    color:#777;
+    margin-bottom:23px;
+}
+
+.main-names{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(50px,12vw,90px);
+    color:#789aac;
+    font-weight:400;
+    line-height:1.05;
+    margin-bottom:25px;
+}
+
+.main-date{
+    font-size:22px;
+    letter-spacing:4px;
+    color:#555;
+}
+
+/* =========================================
+   ЧАКЫРУУ
+========================================= */
+
+.invitation{
+    padding:85px 22px;
+    text-align:center;
+    background:#fff;
+}
+
+.invitation-title{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(42px,9vw,62px);
+    color:#7999aa;
+    line-height:1.2;
+    margin-bottom:35px;
+}
+
+.invitation p{
+    max-width:650px;
+    margin:0 auto 20px;
+    font-size:21px;
+    line-height:1.8;
+}
+
+.couple-name{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(44px,10vw,65px);
+    color:#7999aa;
+    margin:25px 0;
+}
+
+/* =========================================
+   СҮРӨТТӨР
+========================================= */
+
+.big-photo{
+    width:100%;
+    display:block;
+    max-height:850px;
+    object-fit:cover;
+}
+
+/* =========================================
+   КАЛЕНДАРЬ
+========================================= */
+
+.calendar-section{
+    padding:85px 20px;
+    text-align:center;
+    background:#fbfbfa;
+}
+
+.calendar-heading{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(43px,9vw,60px);
+    color:#789aac;
+    margin-bottom:35px;
+}
+
+.calendar{
+    width:min(100%,470px);
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:7px;
+    font-size:18px;
+}
+
+.calendar div{
+    min-height:43px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.week{
+    font-size:13px;
+    color:#888;
+}
+
+.wedding-day{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    background:#86a6b7;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 6px 18px rgba(80,120,145,.25);
+}
+
+.time-text{
+    margin-top:32px;
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:48px;
+    color:#789aac;
+}
+
+/* =========================================
+   ТАЙМЕР
+========================================= */
+
+.timer-section{
+    min-height:650px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:60px 16px;
+
+    background:
+    linear-gradient(
+        rgba(30,35,45,.35),
+        rgba(30,35,45,.45)
+    ),
+    url("photo2.jpg") center/cover no-repeat;
+
+    color:#fff;
+}
+
+.timer-wrap{
+    width:min(100%,700px);
+}
+
+.timer-title{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(50px,12vw,76px);
+    font-weight:400;
+    margin-bottom:45px;
+    text-shadow:0 3px 15px rgba(0,0,0,.25);
+}
+
+.countdown{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.counter{
+    padding:20px 5px;
+    border-radius:15px;
+    border:1px solid rgba(255,255,255,.35);
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(5px);
+}
+
+.number{
+    display:block;
+    font-size:clamp(28px,8vw,52px);
+}
+
+.label{
+    display:block;
+    margin-top:7px;
+    font-size:12px;
+}
+
+/* =========================================
+   ДАРЕК
+========================================= */
+
+.location{
+    padding:85px 22px;
+    text-align:center;
+    background:#fff;
+}
+
+.location h2{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(48px,10vw,66px);
+    color:#789aac;
+    font-weight:400;
+    margin-bottom:30px;
+}
+
+.city{
+    font-size:23px;
+    margin-bottom:15px;
+}
+
+.restaurant{
+    font-size:35px;
+    letter-spacing:2px;
+    margin:16px 0;
+}
+
+.location-time{
+    font-size:22px;
+    margin-top:10px;
+}
+
+.map-btn{
+    display:inline-block;
+    margin-top:35px;
+    padding:15px 38px;
+    border-radius:30px;
+    background:#86a5b5;
+    color:#fff;
+    font-size:18px;
+    text-decoration:none;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    transition:.3s;
+}
+
+.map-btn:hover{
+    transform:translateY(-2px);
+    background:#7191a2;
+}
+
+/* =========================================
+   RSVP
+========================================= */
+
+.rsvp{
+    padding:80px 22px;
+    background:#f5f8f9;
+}
+
+.rsvp-inner{
+    width:min(100%,620px);
+    margin:auto;
+}
+
+.rsvp h2{
+    text-align:center;
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(48px,10vw,66px);
+    font-weight:400;
+    color:#789aac;
+    margin-bottom:35px;
+}
+
+.question{
+    font-size:21px;
+    margin:25px 0 15px;
+}
+
+.option{
+    display:block;
+    font-size:18px;
+    margin:15px 0;
+}
+
+.option input{
+    margin-right:10px;
+    transform:scale(1.25);
+}
+
+.guest-counter{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin:20px 0 30px;
+}
+
+.guest-counter button{
+    width:58px;
+    height:45px;
+    border:1px solid #999;
+    border-radius:25px;
+    background:#fff;
+    font-size:25px;
+    cursor:pointer;
+}
+
+#guestCount{
+    min-width:25px;
+    text-align:center;
+    font-size:26px;
+}
+
+.name-input{
+    width:100%;
+    padding:16px;
+    border:1px solid #aaa;
+    border-radius:10px;
+    font-size:18px;
+    text-align:center;
+    font-family:Georgia,serif;
+    outline:none;
+    background:#fff;
+}
+
+.send-btn{
+    width:100%;
+    margin-top:20px;
+    padding:16px;
+    border:none;
+    border-radius:10px;
+    background:#86a5b5;
+    color:#fff;
+    font-size:21px;
+    font-family:Georgia,serif;
+    cursor:pointer;
+}
+
+/* =========================================
+   АКЫРКЫ БӨЛҮК
+========================================= */
+
+.footer{
+    text-align:center;
+    padding:85px 20px 0;
+    background:#fff;
+}
+
+.footer p{
+    font-size:21px;
+    line-height:1.7;
+}
+
+.hosts{
+    font-family:"Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(50px,10vw,68px) !important;
+    color:#789aac;
+    margin:25px 0 28px;
+}
+
+.last-message{
+    max-width:600px;
+    margin:auto;
+}
+
+.footer-photo{
+    display:block;
+    width:100%;
+    max-height:850px;
+    object-fit:cover;
+    margin-top:55px;
+}
+
+/* =========================================
+   МУЗЫКА КНОПКАСЫ
+========================================= */
+
+.music-button{
+    position:fixed;
+    right:18px;
+    bottom:20px;
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:rgba(121,154,172,.95);
+    color:#fff;
+    font-size:24px;
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+    z-index:1000;
+    cursor:pointer;
+    display:none;
+}
+
+/* =========================================
+   ТЕЛЕФОН
+========================================= */
+
+@media(max-width:520px){
+
+    .envelope{
+        height:235px;
+    }
+
+    .envelope:before{
+        border-left-width:190px;
+        border-top-width:118px;
+        border-bottom-width:118px;
+    }
+
+    .envelope:after{
+        border-right-width:190px;
+        border-top-width:118px;
+        border-bottom-width:118px;
+    }
+
+    .flap{
+        height:130px;
+    }
+
+    .envelope-names{
+        font-size:38px;
+    }
+
+    .seal{
+        width:60px;
+        height:60px;
+    }
+
+    .open-text{
+        font-size:15px;
+    }
+
+    .hero-card{
+        padding:38px 15px;
+    }
+
+    .invitation p{
+        font-size:18px;
+    }
+
+    .calendar{
+        gap:3px;
+        font-size:16px;
+    }
+
+    .countdown{
+        gap:5px;
+    }
+
+    .counter{
+        padding:15px 2px;
+    }
+
+    .label{
+        font-size:10px;
+    }
+
+    .city,
+    .location-time{
+        font-size:19px;
+    }
+
+    .restaurant{
+        font-size:28px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================
+     МУЗЫКА
+========================================= -->
+
+<audio id="weddingMusic" loop preload="auto">
+    <source src="music.m4a" type="audio/mp4">
+</audio>
+
+
+<!-- =========================================
+     БИРИНЧИ КОНВЕРТ
+========================================= -->
+
+<div id="welcome">
+
+    <div class="welcome-box">
+
+        <div class="envelope" id="envelope">
+
+            <div class="flap"></div>
+
+            <div class="envelope-content">
+
+                <div class="envelope-names">
+                    Нургазы & Алина
+                </div>
+
+                <div class="seal">
+                    ♡
+                </div>
+
+                <div class="open-text">
+                    Чакырууну ачуу үчүн басыңыз
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     САЙТ
+========================================= -->
+
+<main>
+
+
+<!-- БАШКЫ ЭКРАН -->
+
+<section class="hero">
+
+    <div class="hero-card fade">
+
+        <div class="wedding-title">
+            ҮЙЛӨНҮҮ ҮЛПӨТ ТОЮ
+        </div>
+
+        <h1 class="main-names">
+            Нургазы & Алина
+        </h1>
+
+        <div class="main-date">
+            04 • 10 • 2026
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ЧАКЫРУУ ТЕКСТИ -->
+
+<section class="invitation">
+
+    <div class="container fade">
+
+        <h2 class="invitation-title">
+            Урматтуу биздин сыйлуу коногубуз
+        </h2>
+
+        <p>
+            Сиздерди балдарыбыз
+        </p>
+
+        <div class="couple-name">
+            Нургазы менен Алинанын
+        </div>
+
+        <p>
+            үйлөнүү үлпөт тоюна арналган салтанаттуу
+            кечебизге келип, ак дасторконубуздан даам сызып,
+            батаңызды берип, кадырлуу коногубуз болуп
+            кетүүгө чакырабыз.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- 1 СҮРӨТ -->
+
+<section>
+    <img
+        src="photo3.jpg"
+        alt="Үйлөнүү үлпөтү"
+        class="big-photo"
+    >
+</section>
+
+
+<!-- КАЛЕНДАРЬ -->
+
+<section class="calendar-section">
+
+    <div class="container fade">
+
+        <h2 class="calendar-heading">
+            2026-жылдын 4-октябры
+        </h2>
+
+        <div class="calendar">
+
+            <div class="week">Дш</div>
+            <div class="week">Шш</div>
+            <div class="week">Шр</div>
+            <div class="week">Бш</div>
+            <div class="week">Жм</div>
+            <div class="week">Иш</div>
+            <div class="week">Жк</div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+
+            <div>
+                <span class="wedding-day">
+                    4
+                </span>
+            </div>
+
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+
+            <div>12</div>
+            <div>13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
+
+            <div>19</div>
+            <div>20</div>
+            <div>21</div>
+            <div>22</div>
+            <div>23</div>
+            <div>24</div>
+            <div>25</div>
+
+            <div>26</div>
+            <div>27</div>
+            <div>28</div>
+            <div>29</div>
+            <div>30</div>
+            <div>31</div>
+
+        </div>
+
+        <div class="time-text">
+            Саат 16:00
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ТАЙМЕР -->
+
+<section class="timer-section">
+
+    <div class="timer-wrap fade">
+
+        <h2 class="timer-title">
+            Тойго чейин
+        </h2>
+
+        <div class="countdown">
+
+            <div class="counter">
+                <span id="days" class="number">
+                    00
+                </span>
+                <span class="label">
+                    КҮН
+                </span>
+            </div>
+
+            <div class="counter">
+                <span id="hours" class="number">
+                    00
+                </span>
+                <span class="label">
+                    СААТ
+                </span>
+            </div>
+
+            <div class="counter">
+                <span id="minutes" class="number">
+                    00
+                </span>
+                <span class="label">
+                    МҮНӨТ
+                </span>
+            </div>
+
+            <div class="counter">
+                <span id="seconds" class="number">
+                    00
+                </span>
+                <span class="label">
+                    СЕКУНД
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ДАРЕК -->
+
+<section class="location">
+
+    <div class="container fade">
+
+        <h2>
+            Дарегибиз
+        </h2>
+
+        <div class="city">
+            Кызыл-Кыя шаары
+        </div>
+
+        <div class="restaurant">
+            Ресторан «Салкын»
+        </div>
+
+        <div class="location-time">
+            Тойдун башталышы: 16:00
+        </div>
+
+        <a
+            href="https://www.google.com/maps/search/?api=1&query=Салкын+ресторан+Кызыл-Кыя"
+            class="map-btn"
+            target="_blank"
+        >
+            Картадан көрүү
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- 2 СҮРӨТ -->
+
+<section>
+    <img
+        src="photo2.jpg"
+        alt="Нургазы жана Алина"
+        class="big-photo"
+    >
+</section>
+
+
+<!-- ТОЙГО КЕЛЕСИЗБИ -->
+
+<section class="rsvp">
+
+    <div class="rsvp-inner fade">
+
+        <h2>
+            Тойго келесизби
+        </h2>
+
+        <div class="question">
+            Келесизби?
+        </div>
+
+        <label class="option">
+            <input
+                type="radio"
+                name="attendance"
+                value="Ооба барам"
+            >
+            Ооба, барам
+        </label>
+
+        <label class="option">
+            <input
+                type="radio"
+                name="attendance"
+                value="Жубайым менен барам"
+            >
+            Жубайым менен барам
+        </label>
+
+        <label class="option">
+            <input
+                type="radio"
+                name="attendance"
+                value="Бара албайм"
+            >
+            Бара албайм
+        </label>
+
+
+        <div class="question">
+            Канча адам менен келесиз?
+        </div>
+
+        <div class="guest-counter">
+
+            <button
+                type="button"
+                onclick="changeGuests(-1)"
+            >
+                −
+            </button>
+
+            <span id="guestCount">
+                1
+            </span>
+
+            <button
+                type="button"
+                onclick="changeGuests(1)"
+            >
+                +
+            </button>
+
+        </div>
+
+
+        <input
+            type="text"
+            id="guestName"
+            class="name-input"
+            placeholder="Атыңызды жазыңыз"
+        >
+
+
+        <button
+            class="send-btn"
+            onclick="sendRSVP()"
+        >
+            Жөнөтүү
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- АКЫРКЫ БӨЛҮК -->
+
+<section class="footer">
+
+    <div class="container fade">
+
+        <p>
+            Сиздерди урматтоо менен той ээлери:
+        </p>
+
+        <p class="hosts">
+            Замирбек & Мария
+        </p>
+
+        <p class="last-message">
+            Тойго келип, биздин кубанычыбызга
+            ортоктош болуп, кадырлуу коногубуз
+            болуп кетиңиздер!
+        </p>
+
+    </div>
+
+    <img
+        src="photo3.jpg"
+        alt="Wedding"
+        class="footer-photo"
+    >
+
+</section>
+
+
+</main>
+
+
+<!-- МУЗЫКА КНОПКА -->
+
+<button
+    id="musicButton"
+    class="music-button"
+    onclick="toggleMusic()"
+>
+    ♫
+</button>
+
+
+<script>
+
+/* =========================================
+   КОНВЕРТТИ АЧУУ
+========================================= */
+
+const welcome =
+document.getElementById("welcome");
+
+const envelope =
+document.getElementById("envelope");
+
+const music =
+document.getElementById("weddingMusic");
+
+const musicButton =
+document.getElementById("musicButton");
+
+
+document.body.style.overflow = "hidden";
+
+
+envelope.addEventListener("click", function(){
+
+    envelope.classList.add("open");
+
+    music.play().catch(function(error){
+        console.log(error);
+    });
+
+    setTimeout(function(){
+
+        welcome.classList.add("hide");
+
+        musicButton.style.display = "block";
+
+        document.body.style.overflow = "auto";
+
+    }, 850);
+
+});
+
+
+/* =========================================
+   МУЗЫКАНЫ ӨЧҮРҮҮ / КҮЙГҮЗҮҮ
+========================================= */
+
+function toggleMusic(){
+
+    if(music.paused){
+
+        music.play();
+
+        musicButton.innerHTML = "♫";
+
+    }else{
+
+        music.pause();
+
+        musicButton.innerHTML = "▶";
+
+    }
+
+}
+
+
+/* =========================================
+   ТОЙГО ЧЕЙИНКИ ТАЙМЕР
+
+   4-октябрь 2026
+   саат 16:00
+   Кыргызстан убактысы
+========================================= */
+
+const weddingDate =
+new Date("2026-10-04T16:00:00+06:00");
+
+
+function updateCountdown(){
+
+    const now = new Date();
+
+    const difference =
+    weddingDate.getTime() - now.getTime();
+
+
+    if(difference <= 0){
+
+        document.getElementById("days").innerText = "0";
+
+        document.getElementById("hours").innerText = "00";
+
+        document.getElementById("minutes").innerText = "00";
+
+        document.getElementById("seconds").innerText = "00";
+
+        return;
+
+    }
+
+
+    const days =
+    Math.floor(
+        difference /
+        (1000 * 60 * 60 * 24)
+    );
+
+
+    const hours =
+    Math.floor(
+        difference /
+        (1000 * 60 * 60)
+    ) % 24;
+
+
+    const minutes =
+    Math.floor(
+        difference /
+        (1000 * 60)
+    ) % 60;
+
+
+    const seconds =
+    Math.floor(
+        difference /
+        1000
+    ) % 60;
+
+
+    document.getElementById("days").innerText =
+    days;
+
+
+    document.getElementById("hours").innerText =
+    String(hours).padStart(2,"0");
+
+
+    document.getElementById("minutes").innerText =
+    String(minutes).padStart(2,"0");
+
+
+    document.getElementById("seconds").innerText =
+    String(seconds).padStart(2,"0");
+
+}
+
+
+updateCountdown();
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
+
+/* =========================================
+   АДАМ САНЫ
+========================================= */
+
+let guests = 1;
+
+
+function changeGuests(value){
+
+    guests = guests + value;
+
+    if(guests < 1){
+        guests = 1;
+    }
+
+    if(guests > 20){
+        guests = 20;
+    }
+
+    document.getElementById(
+        "guestCount"
+    ).innerText = guests;
+
+}
+
+
+/* =========================================
+   RSVP
+========================================= */
+
+function sendRSVP(){
+
+    const guestName =
+    document
+    .getElementById("guestName")
+    .value
+    .trim();
+
+
+    const attendance =
+    document.querySelector(
+        'input[name="attendance"]:checked'
+    );
+
+
+    if(guestName === ""){
+
+        alert(
+            "Сураныч, атыңызды жазыңыз."
+        );
+
+        return;
+
+    }
+
+
+    if(!attendance){
+
+        alert(
+            "Сураныч, тойго келериңизди белгилеңиз."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Рахмат, " +
+        guestName +
+        "!\n\n" +
+        "Жообуңуз кабыл алынды.\n" +
+        attendance.value +
+        "\nАдам саны: " +
+        guests
+    );
+
+}
+
+
+/* =========================================
+   СКРОЛЛ АНИМАЦИЯСЫ
+========================================= */
+
+const observer =
+new IntersectionObserver(
+
+function(entries){
+
+    entries.forEach(function(entry){
+
+        if(entry.isIntersecting){
+
+            entry.target.classList.add("show");
+
+        }
+
+    });
+
+},
+
+{
+    threshold:0.15
+}
+
+);
+
+
+document
+.querySelectorAll(".fade")
+.forEach(function(element){
+
+    observer.observe(element);
+
+});
+
+</script>
+
+</body>
+  </html>
